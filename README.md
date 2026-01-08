@@ -11,8 +11,8 @@ A task management application built with NestJS, GraphQL and PostgreSQL.
 
 ### 1. Setup environment variables
 ```bash
-cp api/.env.example api/.env
-# Edit api/.env if needed
+cp api/.env.example .env
+# Edit .env if needed
 ```
 
 ### 2. Start services
