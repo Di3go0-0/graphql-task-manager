@@ -3,9 +3,19 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../src/app.module';
 
-interface App {
-  listen(): void;
-  close(): void;
+// GraphQL Response Type
+interface GraphQLResponse {
+  data?: {
+    tasks?: Array<{
+      id: string;
+      title: string;
+      completed: boolean;
+    }>;
+  };
+  errors?: Array<{
+    message: string;
+    extensions?: Record<string, unknown>;
+  }>;
 }
 
 // GraphQL Response Type
@@ -24,7 +34,7 @@ interface GraphQLResponse {
 }
 
 describe('GraphQL API E2E Tests', () => {
-  let app: INestApplication<App>;
+  let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -50,10 +60,11 @@ describe('GraphQL API E2E Tests', () => {
       .post('/graphql')
       .send({ query })
       .expect(200)
-      .expect((res: { body: GraphQLResponse }) => {
-        expect(res.body.data).toBeDefined();
-        expect(res.body.errors).toBeUndefined();
-        expect(Array.isArray(res.body.data?.tasks)).toBe(true);
+      .expect((res) => {
+        const response = res.body as GraphQLResponse;
+        expect(response.data).toBeDefined();
+        expect(response.errors).toBeUndefined();
+        expect(Array.isArray(response.data?.tasks)).toBe(true);
       });
   });
 
@@ -68,9 +79,10 @@ describe('GraphQL API E2E Tests', () => {
       .post('/graphql')
       .send({ query: invalidQuery })
       .expect(400)
-      .expect((res: { body: GraphQLResponse }) => {
-        expect(res.body.errors).toBeDefined();
-        expect(Array.isArray(res.body.errors)).toBe(true);
+      .expect((res) => {
+        const response = res.body as GraphQLResponse;
+        expect(response.errors).toBeDefined();
+        expect(Array.isArray(response.errors)).toBe(true);
       });
   });
 });
