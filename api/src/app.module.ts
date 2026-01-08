@@ -5,13 +5,13 @@ import { ConfigModule } from '@nestjs/config';
 import { databaseConfig, envConfig } from './shared/config';
 
 @Module({
-  imports: [ 
+  imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [envConfig, databaseConfig],
     }),
-    ModulesModule, 
-    SharedModule
+    ModulesModule,
+    SharedModule,
   ],
 })
 export class AppModule {}

@@ -3,6 +3,6 @@ import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [DatabaseModule],
-  exports: [DatabaseModule]
+  exports: [DatabaseModule],
 })
 export class SharedModule {}
