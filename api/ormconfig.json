@@ -1,0 +1,12 @@
+{
+  "type": "postgres",
+  "url": process.env.DATABASE_URL,
+  "synchronize": false,
+  "logging": false,
+  "entities": ["src/modules/**/*.model.ts"],
+  "migrations": ["src/migrations/*.ts"],
+  "cli": {
+    "entitiesDir": "src/modules",
+    "migrationsDir": "src/migrations"
+  }
+}
