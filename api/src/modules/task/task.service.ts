@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './models/task.model';
 import { Repository } from 'typeorm';
@@ -35,7 +35,7 @@ export class TaskService {
   async markAsCompleted(id: string):Promise<Task>{
     const task = await this.findById(id);
 
-    if (!task) throw new Error('Task not found');
+    if (!task) throw new NotFoundException('Task not found');
 
     task.completed = true;
     return this.taskRepository.save(task);
