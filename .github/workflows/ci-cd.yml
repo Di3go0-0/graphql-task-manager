@@ -88,7 +88,7 @@ jobs:
         run: npm run test:cov
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           file: api/coverage/lcov.info
           fail_ci_if_error: false
@@ -126,7 +126,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -147,12 +147,12 @@ jobs:
       - name: Container security scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}
+          image-ref: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}@${{ steps.build.outputs.digest }}
           format: 'sarif'
           output: 'trivy-results.sarif'
 
       - name: Upload Trivy scan results
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'
