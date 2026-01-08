@@ -6,10 +6,7 @@ import { DatabaseModule } from '../../shared/database/database.module';
 import { TaskResolver } from './task.resolver';
 
 @Module({
-  imports: [
-    DatabaseModule, 
-    TypeOrmModule.forFeature([Task])
-  ],
-  providers: [TaskService, TaskResolver]
+  imports: [DatabaseModule, TypeOrmModule.forFeature([Task])],
+  providers: [TaskService, TaskResolver],
 })
 export class TaskModule {}

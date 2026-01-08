@@ -1,0 +1,18 @@
+import { Field, InputType, Int } from '@nestjs/graphql';
+import { IsOptional, IsInt, Min, Max } from 'class-validator';
+
+@InputType()
+export class PaginationInput {
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(100)
+  limit?: number = 10;
+
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  offset?: number = 0;
+}

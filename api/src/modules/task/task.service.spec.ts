@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { TaskService } from './task.service';
 import { Task } from './models/task.model';
 import { CreateTaskInput } from './types/task.input';
@@ -8,7 +7,6 @@ import { NotFoundException } from '@nestjs/common';
 
 describe('TaskService', () => {
   let service: TaskService;
-  let repository: Repository<Task>;
 
   const mockTask: Task = {
     id: '123e4567-e89b-12d3-a456-426614174000',
@@ -39,7 +37,6 @@ describe('TaskService', () => {
     }).compile();
 
     service = module.get<TaskService>(TaskService);
-    repository = module.get<Repository<Task>>(getRepositoryToken(Task));
   });
 
   afterEach(() => {
@@ -140,7 +137,7 @@ describe('TaskService', () => {
     it('should mark a task as completed and return it', async () => {
       const incompleteTask = { ...mockTask, completed: false };
       const completedTask = { ...mockTask, completed: true };
-      
+
       mockRepository.findOne.mockResolvedValue(incompleteTask);
       mockRepository.save.mockResolvedValue(completedTask);
 
@@ -151,7 +148,7 @@ describe('TaskService', () => {
         where: { id: mockTask.id },
       });
       expect(mockRepository.save).toHaveBeenCalledWith(
-        expect.objectContaining({ completed: true })
+        expect.objectContaining({ completed: true }),
       );
     });
 
@@ -159,7 +156,7 @@ describe('TaskService', () => {
       mockRepository.findOne.mockResolvedValue(null);
 
       await expect(service.markAsCompleted('non-existent-id')).rejects.toThrow(
-        NotFoundException
+        NotFoundException,
       );
     });
   });

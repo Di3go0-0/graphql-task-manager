@@ -6,7 +6,6 @@ import { CreateTaskInput } from './types/task.input';
 
 describe('TaskResolver', () => {
   let resolver: TaskResolver;
-  let service: TaskService;
 
   const mockTask: Task = {
     id: '123e4567-e89b-12d3-a456-426614174000',
@@ -37,7 +36,6 @@ describe('TaskResolver', () => {
     }).compile();
 
     resolver = module.get<TaskResolver>(TaskResolver);
-    service = module.get<TaskService>(TaskService);
   });
 
   afterEach(() => {
