@@ -38,7 +38,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = 'Internal server error';
-      details = exception instanceof Error ? exception.stack : String(exception);
+      details =
+        exception instanceof Error ? exception.stack : String(exception);
     }
 
     const errorResponse: Record<string, unknown> = {

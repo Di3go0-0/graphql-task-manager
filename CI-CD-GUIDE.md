@@ -1,11 +1,11 @@
 # CI/CD Pipeline Usage Guide
 
-## 🚀 ¿Cómo funciona el CI/CD Pipeline?
+## 🚀 How does the CI/CD Pipeline work?
 
-### **🔄 Trigger Automático**
-El pipeline se ejecuta automáticamente cuando:
-- Haces `push` a las ramas `main` o `develop`
-- Creas un `pull request` a `main`
+### **🔄 Automatic Trigger**
+The pipeline runs automatically when:
+- You push to the `main` or `develop` branches
+- You create a pull request to `main`
 
 ---
 
@@ -13,189 +13,189 @@ El pipeline se ejecuta automáticamente cuando:
 
 ### **Stage 1: Code Quality** 🔍
 ```bash
-✅ ESLint - Linting del código
-✅ TypeScript - Validación de tipos  
-✅ npm audit - Vulnerabilidades de seguridad
-✅ Prettier - Formato consistente
+✅ ESLint - Linting code
+✅ TypeScript - Type validation
+✅ npm audit - Security vulnerabilities
+✅ Prettier - Consistent formatting
 ```
 
 ### **Stage 2: Testing** 🧪
 ```bash
-✅ Unit Tests - Pruebas unitarias con Jest
-✅ E2E Tests - Pruebas de integración con DB real
-✅ Coverage - Reporte de cobertura de código
+✅ Unit Tests - Unit testing with Jest
+✅ E2E Tests - Integration tests with real DB
+✅ Coverage - Code coverage report
 ```
 
 ### **Stage 3: Build & Security** 🐳
 ```bash
-✅ Docker Build - Creación de imagen Docker
-✅ Security Scan - Análisis de vulnerabilidades con Trivy
-✅ Push Registry - Sube imagen a GitHub Container Registry
+✅ Docker Build - Create Docker image
+✅ Security Scan - Vulnerability analysis with Trivy
+✅ Push Registry - Upload image to GitHub Container Registry
 ```
 
 ### **Stage 4: Deploy Staging** 🚀
 ```bash
-⚠️ Solo para la rama `develop`
-✅ Deploy a ambiente de staging
+⚠️ Only for the `develop` branch
+✅ Deploy to staging environment
 ✅ Health checks
 ```
 
 ### **Stage 5: Deploy Production** 🏢
 ```bash
-⚠️ Solo para la rama `main`
-✅ Deploy a producción
+⚠️ Only for the `main` branch
+✅ Deploy to production
 ✅ Health checks
 ```
 
 ---
 
-## 🎯 **Cómo usarlo en tu workflow**
+## 🎯 **How to use it in your workflow**
 
-### **1. Desarrollo Local**
+### **1. Local Development**
 ```bash
-# 1. Trabaja en una feature branch
-git checkout -b feature/nueva-funcionalidad
+# 1. Work on a feature branch
+git checkout -b feature/new-functionality
 
-# 2. Hace tus cambios
-# ... código, tests, etc.
+# 2. Make your changes
+# ... code, tests, etc.
 
-# 3. Antes de push, prueba localmente
+# 3. Before pushing, test locally
 npm run lint
 npm run test
 npm run build
 
-# 4. Commitea y hace push
+# 4. Commit and push
 git add .
 git commit -m "feat: add new functionality"
-git push origin feature/nueva-funcionalidad
+git push origin feature/new-functionality
 ```
 
-### **2. Crear Pull Request**
+### **2. Create a Pull Request**
 ```bash
-# 1. Desde GitHub, crea PR a main
-# 2. El CI se ejecuta automáticamente
-# 3. Revisa los resultados en la pestaña "Checks"
+# 1. From GitHub, create PR to main
+# 2. CI runs automatically
+# 3. Check the results in the "Checks" tab
 ```
 
-### **3. Deploy Automático**
+### **3. Automatic Deploy**
 ```bash
-# Merge a develop → Deploy a Staging
+# Merge into develop → Deploy to Staging
 git checkout develop
-git merge feature/nueva-funcionalidad
-git push origin develop  # 🚀 Auto-deploy a staging
+git merge feature/new-functionality
+git push origin develop  # 🚀 Auto-deploy to staging
 
-# Merge a main → Deploy a Producción  
+# Merge into main → Deploy to Production
 git checkout main
 git merge develop
-git push origin main    # 🏢 Auto-deploy a producción
+git push origin main    # 🏢 Auto-deploy to production
 ```
 
 ---
 
-## 📱 **Cómo monitorear el pipeline**
+## 📱 **How to monitor the pipeline**
 
-### **En GitHub Web:**
-1. Ve a tu repo → **"Actions"**
-2. Verás los workflows en ejecución
-3. Click en cada workflow para ver detalles
-4. Revisa logs de cada etapa
+### **On GitHub Web:**
+1. Go to your repo → **"Actions"**
+2. You'll see the running workflows
+3. Click on each workflow to see details
+4. Check logs for each stage
 
-### **Notificaciones:**
-- ✅ **Green check** - Pipeline exitoso
-- ❌ **Red X** - Pipeline falló
-- 🟡 **Yellow** - Pipeline en progreso
+### **Notifications:**
+- ✅ **Green check** - Successful pipeline
+- ❌ **Red X** - Pipeline failed
+- 🟡 **Yellow** - Pipeline in progress
 
 ---
 
-## 🔧 **Configuración Requerida**
+## 🔧 **Required Configuration**
 
-### **1. GitHub Secrets (Configurar en repo settings):**
+### **1. GitHub Secrets (Configure in repo settings):**
 ```yaml
-# Ya viene con GITHUB_TOKEN automático
-# Puede agregar otros según necesites:
+# Comes with GITHUB_TOKEN automatically
+# You may add others as needed:
 # - DATABASE_URL_STAGING
-# - DATABASE_URL_PRODUCTION  
+# - DATABASE_URL_PRODUCTION
 # - DEPLOY_HOST_STAGING
 # - DEPLOY_HOST_PRODUCTION
 ```
 
 ### **2. Environment Protection (Settings → Environments):**
 ```yaml
-Staging: 
-  - Require reviewers (opcional)
-  
+Staging:
+  - Require reviewers (optional)
+
 Production:
-  - Require reviewers (recomendado) 
-  - Wait timer (ej. 5 minutos)
+  - Require reviewers (recommended)
+  - Wait timer (e.g. 5 minutes)
 ```
 
 ---
 
-## 📸 **Ejemplo Real de Uso**
+## 📸 **Real Usage Example**
 
-### **Escenario: Nueva feature de tasks**
+### **Scenario: New task feature**
 
 ```bash
-# 1. Developer crea feature
+# 1. Developer creates feature
 git checkout -b feature/task-filters
-# ... código y tests ...
+# ... code and tests ...
 
-# 2. Push y crea PR
+# 2. Push and create PR
 git push origin feature/task-filters
-# Crea PR en GitHub UI
+# Create PR in GitHub UI
 
-# 3. CI se ejecuta (automático):
-#    ✅ Lint pasa
-#    ✅ Tests pasan  
-#    ✅ Build exitoso
-#    ❌ Security scan encuentra vulnerabilidad
+# 3. CI runs automatically:
+#    ✅ Lint passed
+#    ✅ Tests passed
+#    ✅ Build successful
+#    ❌ Security scan found vulnerability
 
-# 4. Developer arregla seguridad
-npm audit fix  # o actualiza dependencias
+# 4. Developer fixes security
+npm audit fix  # or update dependencies
 git commit -m "fix: update vulnerable dependencies"
 git push
 
-# 5. CI pasa completo ✅
-# 6. Merge a develop → Deploy automático a staging
+# 5. CI passes completely ✅
+# 6. Merge into develop → Automatic deploy to staging
 
-# 7. QA testing en staging
-# 8. Merge a main → Deploy automático a producción
+# 7. QA testing in staging
+# 8. Merge into main → Automatic deploy to production
 ```
 
 ---
 
-## 🚨 **Qué hacer cuando falla**
+## 🚨 **What to do when it fails**
 
-### **1. Ver Logs:**
-- En GitHub Actions, click en el workflow fallido
-- Revisa el step que falló
-- Los errores suelen ser claros
+### **1. Check Logs:**
+- In GitHub Actions, click on the failed workflow
+- Review the step that failed
+- Errors are usually clear
 
-### **2. Debug Local:**
+### **2. Local Debug:**
 ```bash
-# Replica los comandos que fallaron
-npm run lint  # si falló linting
-npm test      # si fallaron tests
-npm run build # si falló build
+# Replicate the commands that failed
+npm run lint  # if linting failed
+npm test      # if tests failed
+npm run build # if build failed
 ```
 
-### **3. Fix y Push:**
+### **3. Fix and Push:**
 ```bash
-# Arregla el problema
-# Haz commit del fix
+# Fix the issue
+# Commit the fix
 git commit -m "fix: resolve linting issues"
-git push  # CI se ejecuta de nuevo
+git push  # CI runs again
 ```
 
 ---
 
-## 🎉 **Beneficios Obtenidos**
+## 🎉 **Benefits Gained**
 
-✅ **Calidad garantizada** - Cada cambio es validado  
-✅ **Tests automáticos** - No se rompe nada en producción  
-✅ **Security scanning** - Vulnerabilidades detectadas temprano  
-✅ **Deploys automatizados** - Sin intervención manual  
-✅ **Rollback fácil** - Si algo falla, revertir con git  
-✅ **Visibilidad total** - Todo está documentado en GitHub  
+✅ **Guaranteed quality** - Every change is validated
+✅ **Automated tests** - Nothing breaks in production
+✅ **Security scanning** - Vulnerabilities detected early
+✅ **Automated deploys** - No manual intervention needed
+✅ **Easy rollback** - If something fails, revert with git
+✅ **Total visibility** - Everything is documented in GitHub
 
-**¡Tu proyecto ahora es enterprise-ready con CI/CD automatizado!** 🚀
+**Your project is now enterprise-ready with automated CI/CD!** 🚀

@@ -76,22 +76,26 @@ describe('TaskService', () => {
     it('should return a task when found', async () => {
       mockRepository.findOne.mockResolvedValue(mockTask);
 
-      const result = await service.findById(mockTask.id);
+      const result = await service.findById(
+        '123e4567-e89b-12d3-a456-426614174000',
+      );
 
       expect(result).toEqual(mockTask);
       expect(mockRepository.findOne).toHaveBeenCalledWith({
-        where: { id: mockTask.id },
+        where: { id: '123e4567-e89b-12d3-a456-426614174000' },
       });
     });
 
     it('should return null when task not found', async () => {
       mockRepository.findOne.mockResolvedValue(null);
 
-      const result = await service.findById('non-existent-id');
+      const result = await service.findById(
+        '123e4567-e89b-12d3-a456-426614174000',
+      );
 
       expect(result).toBeNull();
       expect(mockRepository.findOne).toHaveBeenCalledWith({
-        where: { id: 'non-existent-id' },
+        where: { id: '123e4567-e89b-12d3-a456-426614174000' },
       });
     });
   });
@@ -155,9 +159,9 @@ describe('TaskService', () => {
     it('should throw NotFoundException when task not found', async () => {
       mockRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.markAsCompleted('non-existent-id')).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.markAsCompleted('123e4567-e89b-12d3-a456-426614174000'),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -165,19 +169,27 @@ describe('TaskService', () => {
     it('should delete a task and return true', async () => {
       mockRepository.delete.mockResolvedValue({ affected: 1 });
 
-      const result = await service.remove(mockTask.id);
+      const result = await service.remove(
+        '123e4567-e89b-12d3-a456-426614174000',
+      );
 
       expect(result).toBe(true);
-      expect(mockRepository.delete).toHaveBeenCalledWith(mockTask.id);
+      expect(mockRepository.delete).toHaveBeenCalledWith(
+        '123e4567-e89b-12d3-a456-426614174000',
+      );
     });
 
     it('should return false when task not found for deletion', async () => {
       mockRepository.delete.mockResolvedValue({ affected: 0 });
 
-      const result = await service.remove('non-existent-id');
+      const result = await service.remove(
+        '123e4567-e89b-12d3-a456-426614174000',
+      );
 
       expect(result).toBe(false);
-      expect(mockRepository.delete).toHaveBeenCalledWith('non-existent-id');
+      expect(mockRepository.delete).toHaveBeenCalledWith(
+        '123e4567-e89b-12d3-a456-426614174000',
+      );
     });
   });
 });
