@@ -23,8 +23,5 @@ BEFORE UPDATE ON tasks
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at();
 
-INSERT INTO tasks (title, description)
-VALUES
-('Learn GraphQL', 'Understand how GraphQL works with NestJS'),
-('Build Task Manager', 'Create a simple task manager using GraphQL');
+
 
